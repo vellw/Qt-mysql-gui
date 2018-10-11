@@ -35,3 +35,6 @@ FORMS += \
 
 DISTFILES += \
     .gitignore
+
+RESOURCES += \
+    resource.qrc
