@@ -2,5 +2,7 @@
     <qresource prefix="/png">
         <file>splash/img/mysqlgui.png</file>
         <file>splash/img/mysqlgui-blue.png</file>
+        <file>resource/icon/add0.png</file>
+        <file>resource/icon/edit0.png</file>
     </qresource>
 </RCC>

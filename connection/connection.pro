@@ -1,15 +1,17 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2018-10-11T16:46:44
+# Project created by QtCreator 2018-10-12T09:45:47
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += sql
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       -= gui
 
-TARGET = v-mysql
-TEMPLATE = app
+TARGET = connection
+TEMPLATE = lib
+
+DEFINES += CONNECTION_LIBRARY
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -22,31 +24,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
-    openhostdialog.cpp
+        connection.cpp
 
 HEADERS += \
-        mainwindow.hpp \
-    openhostdialog.hpp
+        connection.hpp \
+        connection_global.hpp 
 
-FORMS += \
-        mainwindow.ui \
-    openhostdialog.ui
+unix {
+    target.path = /usr/lib
+    INSTALLS += target
+}
 
-DISTFILES += \
-    .gitignore
-
-RESOURCES += \
-    resource.qrc
-
-DESTDIR = ../bin
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/release/ -lconnection
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/debug/ -lconnection
-else:unix: LIBS += -L$$PWD/lib/ -lconnection
-
-INCLUDEPATH += $$PWD/.
-DEPENDPATH += $$PWD/.
+DESTDIR = ../lib
