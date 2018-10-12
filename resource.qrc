@@ -1,5 +1,6 @@
 <RCC>
-    <qresource prefix="/splash/img">
+    <qresource prefix="/png">
         <file>splash/img/mysqlgui.png</file>
+        <file>splash/img/mysqlgui-blue.png</file>
     </qresource>
 </RCC>
