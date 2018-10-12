@@ -50,3 +50,17 @@ else:unix: LIBS += -L$$PWD/lib/ -lconnection
 
 INCLUDEPATH += $$PWD/.
 DEPENDPATH += $$PWD/.
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/release/ -lopen_workspace
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/debug/ -lopen_workspace
+else:unix: LIBS += -L$$PWD/lib/ -lopen_workspace
+
+INCLUDEPATH += $$PWD/.
+DEPENDPATH += $$PWD/.
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/release/ -lsave_workspace
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/debug/ -lsave_workspace
+else:unix: LIBS += -L$$PWD/lib/ -lsave_workspace
+
+INCLUDEPATH += $$PWD/.
+DEPENDPATH += $$PWD/.

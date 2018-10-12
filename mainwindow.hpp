@@ -20,7 +20,10 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QPushButton * ptr_addNew;
+    QPushButton * ptr_addNew;    // 添加新的数据库连接
+    QTabBar * ptr_workspace_tabbar;   // 标签栏，用于多个数据库连接的切换
+    QMenuBar * ptr_workspace_menubar; // 菜单栏，用于连接数据库后的工作菜单
+    QToolBar * ptr_worspace_toolbar;  // 工具栏，用于数据库工作区的工具条
 };
 
 #endif // MAINWINDOW_HPP
