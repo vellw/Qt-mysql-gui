@@ -1,2 +1,5 @@
 ./build-v-mysql-Desktop_Qt_5_11_1_GCC_64bit-Debug/
 ./build-connection-Desktop_Qt_5_11_1_GCC_64bit-Debug/
+./lib/
+./bin/
+Makefile
