@@ -6,7 +6,8 @@
 namespace Ui {
     class OpenHostDialog;
     }
-
+class MainWindow;
+class Connection;
 class OpenHostDialog : public QDialog
 {
     Q_OBJECT
@@ -19,9 +20,11 @@ private slots:
     void on_connect_db_clicked();
 
     void on_connect_cancle_clicked();
-
+signals:
+    void set_database_params(const QString &host,const QString &user,const QString &password,const QString &port,const QString &database_name);
 private:
     Ui::OpenHostDialog *ui;
+    MainWindow * mainwindow;
 };
 
 #endif // OPENHOSTDIALOG_HPP

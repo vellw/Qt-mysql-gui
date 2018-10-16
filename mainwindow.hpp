@@ -2,11 +2,14 @@
 #define MAINWINDOW_HPP
 
 #include <QMainWindow>
+#include "connection/connection.hpp"
+#include "connection/connection_global.hpp"
 
 namespace Ui {
     class MainWindow;
     }
 class QPushButton;
+class OpenHostDialog;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -18,6 +21,13 @@ public:
 private slots:
     void on_add_new_clicked();
 
+public slots:
+    void set_database_conn_obj(const QString &host,const QString &user,const QString &password,const QString &port,const QString &database_name);  // 设置数据库连接的对象
+    void switch_workspace_tabBar();           // 切换工作区标签
+    void switch_workspace_menuBar();          // 切换工作区菜单
+    void switch_workspace_toolBar();          // 切换工作区工具
+public:
+    Connection * ptr_conn;        // 数据库连接
 private:
     Ui::MainWindow *ui;
     QPushButton * ptr_addNew;    // 添加新的数据库连接

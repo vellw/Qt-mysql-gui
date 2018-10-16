@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets sql
 
 TARGET = v-mysql
 TEMPLATE = app
@@ -30,7 +30,8 @@ SOURCES += \
 
 HEADERS += \
         mainwindow.hpp \
-    openhostdialog.hpp
+    openhostdialog.hpp \
+    global_data.hpp
 
 FORMS += \
         mainwindow.ui \
@@ -43,6 +44,7 @@ RESOURCES += \
     resource.qrc
 
 DESTDIR = ../bin
+
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/release/ -lconnection
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/debug/ -lconnection

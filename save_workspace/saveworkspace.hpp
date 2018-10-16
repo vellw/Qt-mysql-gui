@@ -8,7 +8,7 @@ class SAVE_WORKSPACESHARED_EXPORT Saveworkspace
 {
 
 public:
-    Saveworkspace();
+    explicit Saveworkspace() = default;
 protected:
     QString file_name;
 };
