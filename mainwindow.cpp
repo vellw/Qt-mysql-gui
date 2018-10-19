@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle(tr("mysql gui tool"));
-    ptr_addNew = (QPushButton*)ui->add_new;
+    ptr_addNew = dynamic_cast<QPushButton *> (ui->add_new);
     if(ptr_addNew)
     {
         ptr_addNew->setText(tr(""));
@@ -77,8 +77,9 @@ void MainWindow::set_database_conn_obj(const QString &host, const QString &user,
         QMessageBox::information(this,tr("信息"),tr("连接成功"),QMessageBox::Ok);
         // --打开新的数据库工作区
         // 0.告诉mainwindow添加标签
-        // 1.告诉mainwindow替换菜单
 
+        // 1.告诉mainwindow替换菜单
+        switch_workspace_menuBar();
         // 2.告诉mainwindow替换工具条
     }
     else
@@ -94,8 +95,55 @@ void MainWindow::switch_workspace_tabBar()
 
 void MainWindow::switch_workspace_menuBar()
 {
+    ptr_save_menubar = ui->menuBar;
     ui->menuBar->setHidden(true);
-    ptr_workspace_menubar->show();
+    /////////////////////////////////////////////////////////////////////
+    QMenu * ptr_file_menu = new QMenu(this);
+    ptr_file_menu->setTitle(tr("文件(&F)"));
+    ////
+    QAction * ptr_file_menu_item_new = new QAction(ptr_file_menu);
+    ptr_file_menu_item_new->setText(tr("新建(&N)"));
+    ptr_file_menu->addAction(ptr_file_menu_item_new);
+    ////
+    QAction * ptr_file_menu_item_open = new QAction(ptr_file_menu);
+    ptr_file_menu_item_open->setText(tr("打开(&O)"));
+    ptr_file_menu->addAction(ptr_file_menu_item_open);
+    
+    ptr_file_menu->setProperty("menu",true);
+    ////
+    QMenu * ptr_edit_menu = new QMenu(this);
+    ptr_edit_menu->setTitle(tr("编辑(&E)"));
+    
+    ptr_edit_menu->setProperty("menu",true);
+    ////
+    QMenu * ptr_view_menu = new QMenu(this);
+    ptr_view_menu->setTitle(tr("查看(&E)"));
+    
+    ptr_view_menu->setProperty("menu",true);
+    ////
+    QMenu * ptr_query_menu = new QMenu(this);
+    ptr_query_menu->setTitle(tr("查询(&E)"));
+    
+    
+    ////
+    QMenu * ptr_database_menu = new QMenu(this);
+    ptr_database_menu->setTitle(tr("数据库(&E)"));
+    ////
+    QMenu * ptr_server_menu = new QMenu(this);
+    ptr_server_menu->setTitle(tr("服务器(&E)"));
+    ////
+    QMenu * ptr_tool_menu = new QMenu(this);
+    ptr_tool_menu->setTitle(tr("工具(&E)"));
+    ////
+    ptr_workspace_menubar->addMenu(ptr_file_menu);
+    ptr_workspace_menubar->addMenu(ptr_edit_menu);
+    ptr_workspace_menubar->addMenu(ptr_view_menu);
+    ptr_workspace_menubar->addMenu(ptr_query_menu);
+    ptr_workspace_menubar->addMenu(ptr_database_menu);
+    ptr_workspace_menubar->addMenu(ptr_server_menu);
+    ptr_workspace_menubar->addMenu(ptr_server_menu);
+    ui->menuBar = ptr_workspace_menubar;
+    ui->menuBar->show();
 }
 
 void MainWindow::switch_workspace_toolBar()
