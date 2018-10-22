@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ptr_workspace_tabbar->setHidden(true);
     ptr_worspace_toolbar = new QToolBar(this);
     ptr_worspace_toolbar->setHidden(true);
+    ptr_workspace_workpanel = new mainpanel(this);
+    ptr_workspace_workpanel->setHidden(true);
     //////////////////////////////////////////////////////////////////////////
     QDateTime n=QDateTime::currentDateTime();
     QDateTime now;
@@ -50,8 +52,17 @@ MainWindow::~MainWindow()
     if(ptr_workspace_tabbar != nullptr) delete ptr_workspace_tabbar;
     if(ptr_workspace_menubar != nullptr) delete ptr_workspace_menubar;
     if(ptr_worspace_toolbar != nullptr) delete ptr_worspace_toolbar;
+    if(ptr_save_workpanel != nullptr) delete  ptr_save_workpanel;
 
     delete ui;
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    if(ptr_workspace_workpanel)
+    {
+        ptr_workspace_workpanel->resizeEvent(event);
+    }
 }
 
 void MainWindow::on_add_new_clicked()
@@ -81,6 +92,9 @@ void MainWindow::set_database_conn_obj(const QString &host, const QString &user,
         // 1.告诉mainwindow替换菜单
         switch_workspace_menuBar();
         // 2.告诉mainwindow替换工具条
+
+        // 3.告诉mainwindow替换工作区
+        switch_workspace_workpanel();
     }
     else
     {
@@ -93,6 +107,11 @@ void MainWindow::switch_workspace_tabBar()
 
 }
 
+/** **********************
+  * 切换工作菜单
+  *
+  *
+*/
 void MainWindow::switch_workspace_menuBar()
 {
     ptr_save_menubar = ui->menuBar;
@@ -101,15 +120,21 @@ void MainWindow::switch_workspace_menuBar()
     QMenu * ptr_file_menu = new QMenu(this);
     ptr_file_menu->setTitle(tr("文件(&F)"));
     ////
-    QAction * ptr_file_menu_item_new = new QAction(ptr_file_menu);
-    ptr_file_menu_item_new->setText(tr("新建(&N)"));
-    ptr_file_menu->addAction(ptr_file_menu_item_new);
+    QAction * ptr_file_menu_item_newModel = new QAction(ptr_file_menu);
+    ptr_file_menu_item_newModel->setText(tr("新建模型"));
+    ptr_file_menu->addAction(ptr_file_menu_item_newModel);
     ////
-    QAction * ptr_file_menu_item_open = new QAction(ptr_file_menu);
-    ptr_file_menu_item_open->setText(tr("打开(&O)"));
-    ptr_file_menu->addAction(ptr_file_menu_item_open);
-    
-    ptr_file_menu->setProperty("menu",true);
+    QAction * ptr_file_menu_item_newTab = new QAction(ptr_file_menu);
+    ptr_file_menu_item_newTab->setText(tr("新建标签"));
+    ptr_file_menu->addAction(ptr_file_menu_item_newTab);
+    ////
+    QAction * ptr_file_menu_item_openModel = new QAction(ptr_file_menu);
+    ptr_file_menu_item_openModel->setText(tr("打开模型"));
+    ptr_file_menu->addAction(ptr_file_menu_item_openModel);
+    ////
+    QAction * ptr_file_menu_item_openSql = new QAction(ptr_file_menu);
+    ptr_file_menu_item_openSql->setText(tr("打开脚本"));
+    ptr_file_menu->addAction(ptr_file_menu_item_openSql);
     ////
     QMenu * ptr_edit_menu = new QMenu(this);
     ptr_edit_menu->setTitle(tr("编辑(&E)"));
@@ -117,23 +142,23 @@ void MainWindow::switch_workspace_menuBar()
     ptr_edit_menu->setProperty("menu",true);
     ////
     QMenu * ptr_view_menu = new QMenu(this);
-    ptr_view_menu->setTitle(tr("查看(&E)"));
+    ptr_view_menu->setTitle(tr("查看(&V)"));
     
     ptr_view_menu->setProperty("menu",true);
     ////
     QMenu * ptr_query_menu = new QMenu(this);
-    ptr_query_menu->setTitle(tr("查询(&E)"));
+    ptr_query_menu->setTitle(tr("查询(&Q)"));
     
-    
+
     ////
     QMenu * ptr_database_menu = new QMenu(this);
-    ptr_database_menu->setTitle(tr("数据库(&E)"));
+    ptr_database_menu->setTitle(tr("数据库(&D)"));
     ////
     QMenu * ptr_server_menu = new QMenu(this);
-    ptr_server_menu->setTitle(tr("服务器(&E)"));
+    ptr_server_menu->setTitle(tr("服务器(&S)"));
     ////
     QMenu * ptr_tool_menu = new QMenu(this);
-    ptr_tool_menu->setTitle(tr("工具(&E)"));
+    ptr_tool_menu->setTitle(tr("工具(&T)"));
     ////
     ptr_workspace_menubar->addMenu(ptr_file_menu);
     ptr_workspace_menubar->addMenu(ptr_edit_menu);
@@ -142,11 +167,36 @@ void MainWindow::switch_workspace_menuBar()
     ptr_workspace_menubar->addMenu(ptr_database_menu);
     ptr_workspace_menubar->addMenu(ptr_server_menu);
     ptr_workspace_menubar->addMenu(ptr_server_menu);
+    ptr_workspace_menubar->setGeometry(0,0,this->width(),30); // 设置菜单栏位置
     ui->menuBar = ptr_workspace_menubar;
+    setMenuBar(ptr_workspace_menubar);
     ui->menuBar->show();
 }
 
+/***
+ *  切换工作区工具条
+ *
+ *
+*/
 void MainWindow::switch_workspace_toolBar()
 {
 
+}
+
+/********
+ * 切换工作区面板
+ *
+*/
+void MainWindow::switch_workspace_workpanel()
+{
+    ptr_save_workpanel = ui->centralWidget;
+    ptr_workspace_workpanel->setSizeIncrement(ptr_save_workpanel->size());
+    ui->centralWidget->setHidden(true);
+    ptr_workspace_workpanel->setObjectName(QStringLiteral("centralWidget_workspace"));
+    ////----构造workpanel组件>>
+
+    ////----end<<
+    ui->centralWidget = ptr_workspace_workpanel;
+    setCentralWidget(ptr_workspace_workpanel);
+    ui->centralWidget->show();
 }

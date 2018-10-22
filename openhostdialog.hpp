@@ -13,7 +13,7 @@ class OpenHostDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit OpenHostDialog(QWidget *parent = 0);
+    explicit OpenHostDialog(QWidget *parent = nullptr);
     ~OpenHostDialog();
 
 private slots:

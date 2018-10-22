@@ -26,16 +26,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    openhostdialog.cpp
+    openhostdialog.cpp \
+    mainpanel.cpp
 
 HEADERS += \
         mainwindow.hpp \
     openhostdialog.hpp \
-    global_data.hpp
+    global_data.hpp \
+    mainpanel.hpp
 
 FORMS += \
         mainwindow.ui \
-    openhostdialog.ui
+    openhostdialog.ui \
+    mainpanel.ui
 
 DISTFILES += \
     .gitignore
