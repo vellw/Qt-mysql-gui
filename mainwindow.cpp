@@ -7,6 +7,14 @@
 #include <QToolBar>
 #include <QMessageBox>
 #include <QSqlError>
+#include <QTreeView>
+#include <QTabWidget>
+#include <QStandardItem>
+#include <QStandardItemModel>
+#include <QDebug>
+#include <QSqlQuery>
+#include <exception>
+#include <QAbstractItemView>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -59,9 +67,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
+    QWidget::resizeEvent(event);
     if(ptr_workspace_workpanel)
     {
-        ptr_workspace_workpanel->resizeEvent(event);
+        ptr_workspace_workpanel->resize(size());
     }
 }
 
@@ -87,7 +96,6 @@ void MainWindow::set_database_conn_obj(const QString &host, const QString &user,
     {
         QMessageBox::information(this,tr("信息"),tr("连接成功"),QMessageBox::Ok);
         // --打开新的数据库工作区
-        // 0.告诉mainwindow添加标签
 
         // 1.告诉mainwindow替换菜单
         switch_workspace_menuBar();
@@ -135,6 +143,10 @@ void MainWindow::switch_workspace_menuBar()
     QAction * ptr_file_menu_item_openSql = new QAction(ptr_file_menu);
     ptr_file_menu_item_openSql->setText(tr("打开脚本"));
     ptr_file_menu->addAction(ptr_file_menu_item_openSql);
+    ////
+    QAction * ptr_file_menu_item_close_con = new QAction(ptr_file_menu);
+    ptr_file_menu_item_openSql->setText(tr("关闭连接"));
+    ptr_file_menu->addAction(ptr_file_menu_item_close_con);
     ////
     QMenu * ptr_edit_menu = new QMenu(this);
     ptr_edit_menu->setTitle(tr("编辑(&E)"));
@@ -194,7 +206,33 @@ void MainWindow::switch_workspace_workpanel()
     ui->centralWidget->setHidden(true);
     ptr_workspace_workpanel->setObjectName(QStringLiteral("centralWidget_workspace"));
     ////----构造workpanel组件>>
+    QTreeView * ptr_table_list = ptr_workspace_workpanel->get_table_list();
+    ptr_table_list->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    if(ptr_conn->get_db_obj().isValid() &&
+            ptr_conn->get_db_obj().isOpen() &&
+            !ptr_conn->get_db_obj().isOpenError())
+    {
+        QStandardItemModel * ptr_item_model = ptr_workspace_workpanel->get_item_model();
 
+        QString cmd = "show tables;";
+        QSqlQuery query(ptr_conn->get_db_obj()); // 这里必须写，否则始终无法查询且报告 数据库没有打开
+        try
+        {
+            query.exec(cmd);
+            while (query.next())
+            {
+                 ptr_item_model->appendRow(new QStandardItem(query.value(0).toString()));
+            }
+        }
+        catch (std::exception e)
+        {
+            qDebug() << ptr_conn->get_db_obj().lastError();
+        }
+    }
+    else
+    {
+        qDebug() << ptr_conn->get_db_obj().lastError();
+    }
     ////----end<<
     ui->centralWidget = ptr_workspace_workpanel;
     setCentralWidget(ptr_workspace_workpanel);
