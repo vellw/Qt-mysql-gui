@@ -221,7 +221,9 @@ void MainWindow::switch_workspace_workpanel()
             query.exec(cmd);
             while (query.next())
             {
-                 ptr_item_model->appendRow(new QStandardItem(query.value(0).toString()));
+                QStandardItem * ptr_item = new QStandardItem(query.value(0).toString());
+
+                 ptr_item_model->appendRow(ptr_item);
             }
         }
         catch (std::exception e)
